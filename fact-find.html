@@ -897,8 +897,8 @@
           headers: { 'Accept': 'application/json' }
         });
         if (res.ok) {
-          form.style.display = 'none';
-          document.getElementById('ff-success').classList.add('active');
+          window.location.href = 'thanks.html'; //
+          
         } else {
           btn.textContent = 'Submit Fact Find →';
           btn.disabled = false;

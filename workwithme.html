@@ -5,6 +5,69 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Work With Me — International Broker Co</title>
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .apply-options {
+      margin-top: 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .apply-option {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 24px;
+      border: 2px solid #EFEFEF;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .apply-option:hover { border-color: #6B7C4A; background: rgba(107,124,74,0.04); }
+    .apply-option.active { border-color: #6B7C4A; background: rgba(107,124,74,0.06); }
+    .apply-option-icon { font-size: 28px; flex-shrink: 0; }
+    .apply-option-content h4 { font-size: 16px; font-weight: 700; color: #2C2C2C; margin-bottom: 4px; }
+    .apply-option-content p { font-size: 13px; color: #888; line-height: 1.5; margin: 0; }
+    .apply-option-arrow { margin-left: auto; font-size: 20px; color: #6B7C4A; flex-shrink: 0; opacity: 0; transition: opacity 0.2s; }
+    .apply-option:hover .apply-option-arrow, .apply-option.active .apply-option-arrow { opacity: 1; }
+    .apply-panel {
+      display: none;
+      margin-top: 36px;
+      padding: 40px;
+      border: 1px solid #EFEFEF;
+      border-radius: 8px;
+      animation: fadeIn 0.2s ease;
+    }
+    .apply-panel.active { display: block; }
+    .apply-panel h3 { font-size: 20px; font-weight: 800; color: #2C2C2C; margin-bottom: 24px; }
+    .apply-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .apply-field { display: flex; flex-direction: column; gap: 6px; }
+    .apply-field label { font-size: 13px; font-weight: 700; color: #2C2C2C; }
+    .apply-field input, .apply-field textarea {
+      padding: 12px 14px;
+      border: 1.5px solid #EFEFEF;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 14px;
+      color: #2C2C2C;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .apply-field input:focus, .apply-field textarea:focus { border-color: #6B7C4A; }
+    .apply-field textarea { resize: vertical; min-height: 80px; }
+    .apply-field--full { grid-column: 1 / -1; }
+    .apply-submit { border: none; cursor: pointer; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 768px) {
+      .apply-options { grid-template-columns: 1fr; }
+      .apply-grid { grid-template-columns: 1fr; }
+      .apply-panel { padding: 24px; }
+    }
+  </style>
 </head>
 <body>
 
@@ -58,11 +121,64 @@
     <p>We work best with founders who are already generating revenue ($200k–$5m+), based in a Western country, and have started seriously thinking about international structuring — but keep running into complexity, conflicting advice or simply not knowing where to start.</p>
     <p>If that's you, fill in the form below and we'll be in touch.</p>
 
-    <div style="margin-top: 48px; padding: 48px; border: 1px solid #EFEFEF; border-radius: 8px; text-align: center;">
-      <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 12px; color: #2C2C2C;">Ready to get started?</h3>
-      <p style="color: #888; font-size: 15px; margin-bottom: 32px; line-height: 1.6;">Complete our confidential fact find before your consultation.<br>It takes 15–20 minutes and lets us make the most of your time together.</p>
-      <a href="fact-find.html" class="btn-primary" style="display: inline-block;">Complete Fact Find →</a>
-      <p style="margin-top: 20px; font-size: 13px; color: #aaa;">Optional — but highly recommended. The more we know before the call, the better.</p>
+    <!-- OPTION SELECTOR -->
+    <div class="apply-options">
+
+      <div class="apply-option" id="opt-quick" onclick="selectOption('quick')">
+        <div class="apply-option-icon">⚡</div>
+        <div class="apply-option-content">
+          <h4>Quick Enquiry</h4>
+          <p>Leave your details and we'll reach out to find a time. Takes 60 seconds.</p>
+        </div>
+        <div class="apply-option-arrow">→</div>
+      </div>
+
+      <div class="apply-option" id="opt-factfind" onclick="selectOption('factfind')">
+        <div class="apply-option-icon">📋</div>
+        <div class="apply-option-content">
+          <h4>Complete the Fact Find</h4>
+          <p>Full pre-consultation questionnaire. Recommended — lets us make the most of your time together.</p>
+        </div>
+        <div class="apply-option-arrow">→</div>
+      </div>
+
+    </div>
+
+    <!-- QUICK FORM -->
+    <div class="apply-panel" id="panel-quick">
+      <h3>Quick Enquiry</h3>
+      <form id="quick-form">
+        <div class="apply-grid">
+          <div class="apply-field">
+            <label>Full Name</label>
+            <input type="text" name="name" placeholder="Your name" required />
+          </div>
+          <div class="apply-field">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="your@email.com" required />
+          </div>
+          <div class="apply-field">
+            <label>Business Type &amp; Annual Revenue</label>
+            <input type="text" name="business" placeholder="e.g. Agency, $800k/yr" />
+          </div>
+          <div class="apply-field">
+            <label>Country You're Based In</label>
+            <input type="text" name="country" placeholder="e.g. Australia" />
+          </div>
+          <div class="apply-field apply-field--full">
+            <label>What are you trying to achieve?</label>
+            <textarea name="message" rows="3" placeholder="What's your main challenge or goal right now?"></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary apply-submit">Send Enquiry →</button>
+      </form>
+    </div>
+
+    <!-- FACT FIND REDIRECT -->
+    <div class="apply-panel" id="panel-factfind">
+      <h3>Confidential Fact Find</h3>
+      <p style="color:#888;margin-bottom:28px;line-height:1.7">Takes 15–20 minutes. Covers your personal situation, business, assets and goals. The more detail you provide, the more useful your consultation will be.</p>
+      <a href="fact-find.html" class="btn-primary" style="display:inline-block">Start Fact Find →</a>
     </div>
 
   </div>
@@ -75,5 +191,38 @@
     </div>
   </footer>
 
+  <script>
+    function selectOption(type) {
+      document.querySelectorAll('.apply-option').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.apply-panel').forEach(el => el.classList.remove('active'));
+      document.getElementById('opt-' + type).classList.add('active');
+      document.getElementById('panel-' + type).classList.add('active');
+      document.getElementById('panel-' + type).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    document.getElementById('quick-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = this.querySelector('.apply-submit');
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+      const data = new FormData(this);
+      try {
+        const res = await fetch('https://formspree.io/f/xlgyedby', {
+          method: 'POST', body: data, headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          window.location.href = 'thanks.html';
+        } else {
+          btn.textContent = 'Send Enquiry →';
+          btn.disabled = false;
+          alert('Something went wrong. Please try again.');
+        }
+      } catch(err) {
+        btn.textContent = 'Send Enquiry →';
+        btn.disabled = false;
+        alert('Connection error. Please try again.');
+      }
+    });
+  </script>
 </body>
 </html>

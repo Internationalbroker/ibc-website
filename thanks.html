@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thanks — International Broker Co</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+  <style>
+    .thanks-hero {
+      background: var(--charcoal);
+      padding: 120px 40px 70px;
+      text-align: center;
+    }
+    .thanks-hero .thanks-tick {
+      width: 64px;
+      height: 64px;
+      background: rgba(107,124,74,0.2);
+      border: 2px solid var(--olive);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 24px;
+    }
+    .thanks-hero h1 {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .thanks-hero p {
+      font-size: 17px;
+      color: rgba(255,255,255,0.65);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .thanks-body {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 60px 40px 100px;
+    }
+
+    .thanks-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .thanks-divider::before,
+    .thanks-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--light-grey);
+    }
+    .thanks-divider span {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      white-space: nowrap;
+    }
+
+    .thanks-calendly-heading {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .thanks-calendly-heading h2 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--charcoal);
+      margin-bottom: 8px;
+    }
+    .thanks-calendly-heading p {
+      font-size: 15px;
+      color: var(--text-muted);
+    }
+
+    .calendly-inline-widget {
+      min-width: 320px;
+      height: 700px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+      .thanks-hero { padding: 100px 24px 60px; }
+      .thanks-body { padding: 40px 20px 80px; }
+      .calendly-inline-widget { height: 800px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <div class="nav-monogram">IB</div>
+      <div class="nav-brand">
+        <span class="nav-brand-name">International Broker Co</span>
+        <span class="nav-brand-tagline">For Borderless Founders</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="workwithme.html">Work With Me</a></li>
+      <li><a href="borderlessfounders.html">Borderless Founders</a></li>
+      <li><a href="workwithme.html" class="cta-link">Work With Me</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="thanks-hero">
+    <div class="thanks-tick">✓</div>
+    <h1>We've got your details.</h1>
+    <p>Our team will review your enquiry and be in touch shortly. If you'd prefer to book a time directly, you can do that below.</p>
+  </div>
+
+  <div class="thanks-body">
+
+    <div class="thanks-divider">
+      <span>Or book a time now</span>
+    </div>
+
+    <div class="thanks-calendly-heading">
+      <h2>Book a Discovery Call</h2>
+      <p>30 minutes. No obligation. We'll map out your situation and what the path forward looks like.</p>
+    </div>
+
+    <!-- Calendly inline widget -->
+    <div class="calendly-inline-widget"
+         data-url="https://calendly.com/callum-internationalbroker/30min?hide_gdpr_banner=1&primary_color=6B7C4A">
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-brand">International Broker Co</span>
+      <span class="footer-tagline">For Borderless Founders</span>
+      <span class="footer-copy">© 2026 International Broker Co. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+
+</body>
+</html>
