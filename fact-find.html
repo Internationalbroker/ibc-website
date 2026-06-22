@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fact Find — International Broker Co</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ---- FACT FIND SPECIFIC ---- */
+    .ff-hero {
+      background: var(--charcoal);
+      padding: 120px 40px 60px;
+      text-align: center;
+    }
+    .ff-hero h1 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .ff-hero p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.6);
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .ff-hero .ff-time {
+      display: inline-block;
+      margin-top: 20px;
+      background: rgba(107,124,74,0.2);
+      border: 1px solid var(--olive);
+      color: var(--olive-light);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .ff-body {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 60px 40px 100px;
+    }
+
+    /* Section blocks */
+    .ff-section {
+      margin-bottom: 56px;
+    }
+    .ff-section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--olive);
+    }
+    .ff-section-number {
+      width: 32px;
+      height: 32px;
+      background: var(--olive);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .ff-section-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--charcoal);
+      letter-spacing: -0.3px;
+    }
+
+    /* Form grid */
+    .ff-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .ff-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+    }
+    .ff-full { grid-column: 1 / -1; }
+
+    /* Fields */
+    .ff-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .ff-field label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--charcoal);
+      letter-spacing: 0.2px;
+    }
+    .ff-field .ff-hint {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: -2px;
+      font-weight: 400;
+    }
+    .ff-field input,
+    .ff-field select,
+    .ff-field textarea {
+      padding: 12px 14px;
+      border: 1.5px solid var(--light-grey);
+      border-radius: 6px;
+      font-family: var(--font);
+      font-size: 14px;
+      color: var(--charcoal);
+      background: white;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .ff-field input:focus,
+    .ff-field select:focus,
+    .ff-field textarea:focus {
+      border-color: var(--olive);
+    }
+    .ff-field textarea { resize: vertical; min-height: 80px; }
+
+    /* Radio/checkbox groups */
+    .ff-radio-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .ff-radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--charcoal);
+      cursor: pointer;
+      padding: 10px 16px;
+      border: 1.5px solid var(--light-grey);
+      border-radius: 6px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .ff-radio-group input[type="radio"],
+    .ff-radio-group input[type="checkbox"] {
+      padding: 0;
+      border: none;
+      width: 16px;
+      height: 16px;
+      accent-color: var(--olive);
+      flex-shrink: 0;
+    }
+    .ff-radio-group label:has(input:checked) {
+      border-color: var(--olive);
+      background: rgba(107,124,74,0.06);
+    }
+
+    /* Conditional sections */
+    .ff-conditional {
+      display: none;
+      margin-top: 16px;
+      padding: 20px;
+      background: var(--off-white);
+      border-radius: 8px;
+      border-left: 3px solid var(--olive);
+    }
+    .ff-conditional.active { display: block; }
+
+    /* Asset blocks */
+    .ff-asset-block {
+      background: var(--off-white);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .ff-asset-block h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Property repeater */
+    .ff-property-block {
+      background: var(--off-white);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+      border: 1px solid var(--light-grey);
+    }
+    .ff-property-block h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 20px;
+    }
+    #add-property {
+      background: none;
+      border: 1.5px dashed var(--olive);
+      color: var(--olive);
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+    }
+    #add-property:hover { background: rgba(107,124,74,0.06); }
+
+    /* Currency tag */
+    .ff-currency-tag {
+      display: inline-block;
+      background: var(--olive);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 8px;
+      letter-spacing: 0.5px;
+      vertical-align: middle;
+    }
+
+    /* Submit */
+    .ff-submit-section {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid var(--light-grey);
+    }
+    .ff-submit-section p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    .ff-submit {
+      background: var(--olive);
+      color: white;
+      border: none;
+      font-family: var(--font);
+      font-size: 16px;
+      font-weight: 700;
+      padding: 18px 56px;
+      border-radius: 6px;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .ff-submit:hover { background: var(--olive-dark); transform: translateY(-1px); }
+
+    /* Success state */
+    .ff-success {
+      display: none;
+      text-align: center;
+      padding: 80px 40px;
+    }
+    .ff-success.active { display: block; }
+    .ff-success h2 { font-size: 28px; font-weight: 800; color: var(--charcoal); margin-bottom: 12px; }
+    .ff-success p { color: var(--text-muted); font-size: 16px; }
+
+    @media (max-width: 768px) {
+      .ff-body { padding: 40px 20px 80px; }
+      .ff-hero { padding: 100px 20px 50px; }
+      .ff-grid { grid-template-columns: 1fr; }
+      .ff-grid-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <div class="nav-monogram">IB</div>
+      <div class="nav-brand">
+        <span class="nav-brand-name">International Broker Co</span>
+        <span class="nav-brand-tagline">For Borderless Founders</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="workwithme.html">Work With Me</a></li>
+      <li><a href="borderlessfounders.html">Borderless Founders</a></li>
+      <li><a href="workwithme.html" class="cta-link">Work With Me</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="ff-hero">
+    <h1>Confidential Fact Find</h1>
+    <p>Complete this before your consultation. The more detail you provide, the more useful your session will be.</p>
+    <span class="ff-time">⏱ Takes approximately 15–20 minutes</span>
+  </div>
+
+  <div class="ff-body">
+
+    <form id="ff-form">
+
+      <!-- ============================================================
+           SECTION 1 — PERSONAL
+      ============================================================ -->
+      <div class="ff-section">
+        <div class="ff-section-header">
+          <div class="ff-section-number">1</div>
+          <div class="ff-section-title">Personal Information</div>
+        </div>
+
+        <div class="ff-grid" style="margin-bottom:20px">
+          <div class="ff-field">
+            <label>Number of Applicants</label>
+            <div class="ff-radio-group">
+              <label><input type="radio" name="num_applicants" value="1" checked> 1</label>
+              <label><input type="radio" name="num_applicants" value="2"> 2</label>
+              <label><input type="radio" name="num_applicants" value="3"> 3</label>
+            </div>
+          </div>
+          <div class="ff-field">
+            <label>Full Name</label>
+            <input type="text" name="full_name" placeholder="Full legal name" required />
+          </div>
+        </div>
+
+        <div class="ff-grid" style="margin-bottom:20px">
+          <div class="ff-field">
+            <label>Date of Birth</label>
+            <input type="date" name="dob" required />
+          </div>
+          <div class="ff-field">
+            <label>Marital Status</label>
+            <select name="marital_status">
+              <option value="">Select</option>
+              <option>Single</option>
+              <option>Married</option>
+              <option>De facto / Domestic partnership</option>
+              <option>Divorced</option>
+              <option>Widowed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="ff-grid" style="margin-bottom:20px">
+          <div class="ff-field">
+            <label>Do you have a partner/spouse involved in this restructure?</label>
+            <div class="ff-radio-group">
+              <label><input type="radio" name="partner_involved" value="yes" onclick="toggle('partner-detail','yes',this)"> Yes</label>
+              <label><input type="radio" name="partner_involved" value="no" onclick="toggle('partner-detail','yes',this)"> No</label>
+            </div>
+            <div class="ff-conditional" id="partner-detail">
+              <div class="ff-field">
+                <label>Partner's Full Name</label>
+                <input type="text" name="partner_name" placeholder="Full legal name" />
+              </div>
+            </div>
+          </div>
+          <div class="ff-field">
+            <label>Number of Dependent Children</label>
+            <select name="num_children">
+              <option value="0">None</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5+">5+</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="ff-grid">
+          <div class="ff-field ff-full">
+            <label>Current Residential Address</label>
+            <input type="text" name="current_address" placeholder="Full address including country" />
+          </div>
+          <div class="ff-field">
+            <label>Current Citizenship(s)</label>
+            <input type="text" name="citizenships" placeholder="e.g. Australian, British" />
+          </div>
+          <div class="ff-field">
+            <label>Passport(s) Held</label>
+            <span class="ff-hint">List all passports — separate from citizenship, matters for banking & travel</span>
+            <input type="text" name="passports" placeholder="e.g. Australian, British" />
+          </div>
+          <div class="ff-field">
+            <label>Current Personal Tax Residency Country</label>
+            <input type="text" name="tax_residency" placeholder="e.g. Australia" />
+          </div>
+          <div class="ff-field">
+            <label>Are you currently tax resident anywhere outside your home country?</label>
+            <div class="ff-radio-group">
+              <label><input type="radio" name="foreign_tax_residency" value="yes" onclick="toggle('foreign-residency-detail','yes',this)"> Yes</label>
+              <label><input type="radio" name="foreign_tax_residency" value="no" onclick="toggle('foreign-residency-detail','yes',this)"> No</label>
+            </div>
+            <div class="ff-conditional" id="foreign-residency-detail">
+              <div class="ff-field">
+                <label>Where?</label>
+                <input type="text" name="foreign_tax_residency_country" placeholder="Country" />
+              </div>
+            </div>
+          </div>
+          <div class="ff-field">
+            <label>How many days per year do you spend in your home country?</label>
+            <select name="days_home_country">
+              <option value="">Select</option>
+              <option>Less than 30 days</option>
+              <option>30–60 days</option>
+              <option>60–90 days</option>
+              <option>90–120 days</option>
+              <option>120–183 days</option>
+              <option>More than 183 days</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           SECTION 2 — BUSINESS
+      ============================================================ -->
+      <div class="ff-section">
+        <div class="ff-section-header">
+          <div class="ff-section-number">2</div>
+          <div class="ff-section-title">Business Information</div>
+        </div>
+
+        <div class="ff-grid">
+          <div class="ff-field">
+            <label>Name of Current Business</label>
+            <input type="text" name="business_name" placeholder="Legal entity name" />
+          </div>
+          <div class="ff-field ff-full">
+            <label>Business Description</label>
+            <textarea name="business_description" placeholder="What does your business do? (2–3 sentences is fine)"></textarea>
+          </div>
+          <div class="ff-field">
+            <label>Business Location / Registered Country</label>
+            <span class="ff-hint">This will determine the currency used below</span>
+            <select name="business_location" id="business_location" onchange="updateCurrency()">
+              <option value="">Select country</option>
+              <option value="AU">Australia (AUD)</option>
+              <option value="GB">United Kingdom (GBP)</option>
+              <option value="US">United States (USD)</option>
+              <option value="CA">Canada (CAD)</option>
+              <option value="NZ">New Zealand (NZD)</option>
+              <option value="SG">Singapore (SGD)</option>
+              <option value="AE">United Arab Emirates (AED)</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+          <div class="ff-field">
+            <label>Business Structure Type</label>
+            <select name="business_structure">
+              <option value="">Select</option>
+              <option>Sole Trader</option>
+              <option>Company / Pty Ltd / Ltd</option>
+              <option>Trust</option>
+              <option>Partnership</option>
+              <option>LLC</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="ff-field">
+            <label>Time Operating Current Business</label>
+            <select name="time_operating">
+              <option value="">Select</option>
+              <option>Less than 1 year</option>
+              <option>1–2 years</option>
+              <option>2–5 years</option>
+              <option>5–10 years</option>
+              <option>More than 10 years</option>
+            </select>
+          </div>
+          <div class="ff-field">
+            <label>Do you pay yourself a salary from the business?</label>
+            <div class="ff-radio-group">
+              <label><input type="radio" name="pays_salary" value="yes" onclick="toggle('salary-detail','yes',this)"> Yes</label>
+              <label><input type="radio" name="pays_salary" value="no" onclick="toggle('salary-detail','yes',this)"> No</label>
+            </div>
+            <div class="ff-conditional" id="salary-detail">
+              <div class="ff-field">
+                <label>Annual Salary <span class="ff-currency-tag" id="salary-currency">AUD</span></label>
+                <input type="text" name="salary_amount" placeholder="e.g. 150,000" />
+              </div>
+            </div>
+          </div>
+          <div class="ff-field">
+            <label>Current Revenue Per Annum <span class="ff-currency-tag" id="revenue-currency">AUD</span></label>
+            <input type="text" name="revenue" placeholder="e.g. 1,200,000" />
+          </div>
+          <div class="ff-field">
+            <label>Current Profit Per Annum <span class="ff-currency-tag" id="profit-currency">AUD</span></label>
+            <input type="text" name="profit" placeholder="e.g. 400,000" />
+          </div>
+          <div class="ff-field">
+            <label>Anticipated Business Value in 3–5 Years <span class="ff-currency-tag" id="future-val-currency">AUD</span></label>
+            <span class="ff-hint">Your estimate — used for exit tax and restructure timing calculations</span>
+            <input type="text" name="future_value" placeholder="e.g. 3,000,000" />
+          </div>
+          <div class="ff-field">
+            <label>Is the business sellable / have you had it valued?</label>
+            <div class="ff-radio-group">
+              <label><input type="radio" name="business_valued" value="yes" onclick="toggle('valuation-detail','yes',this)"> Yes</label>
+              <label><input type="radio" name="business_valued" value="no" onclick="toggle('valuation-detail','yes',this)"> No</label>
+              <label><input type="radio" name="business_valued" value="unsure"> Unsure</label>
+            </div>
+            <div class="ff-conditional" id="valuation-detail">
+              <div class="ff-field">
+                <label>Current Estimated Value <span class="ff-currency-tag" id="valuation-currency">AUD</span></label>
+                <input type="text" name="business_value" placeholder="e.g. 1,500,000" />
+              </div>
+            </div>
+          </div>
+          <div class="ff-field">
+            <label>Original Cost Base of Business <span class="ff-currency-tag" id="costbase-currency">AUD</span></label>
+            <span class="ff-hint">What did you originally invest to set it up? Generally zero — enter 0 if unsure</span>
+            <input type="text" name="cost_base" placeholder="0" />
+          </div>
+          <div class="ff-field">
+            <label>Are you aware of your current CGT / exit tax exposure if you sold today?</label>
+            <div class="ff-radio-group">
+              <label><input type="radio" name="cgt_aware" value="yes" onclick="toggle('cgt-detail','yes',this)"> Yes</label>
+              <label><input type="radio" name="cgt_aware" value="no" onclick="toggle('cgt-detail','yes',this)"> No</label>
+            </div>
+            <div class="ff-conditional" id="cgt-detail">
+              <div class="ff-field">
+                <label>Estimated CGT / Exit Tax Exposure <span class="ff-currency-tag" id="cgt-currency">AUD</span></label>
+                <input type="text" name="cgt_exposure" placeholder="e.g. 235,000" />
+              </div>
+            </div>
+          </div>
+          <div class="ff-field">
+            <label>Do you have employees?</label>
+            <div class="ff-radio-group">
+              <label><input type="radio" name="has_employees" value="yes" onclick="toggle('employee-detail','yes',this)"> Yes</label>
+              <label><input type="radio" name="has_employees" value="no" onclick="toggle('employee-detail','yes',this)"> No</label>
+            </div>
+            <div class="ff-conditional" id="employee-detail">
+              <div class="ff-grid">
+                <div class="ff-field">
+                  <label>Number of Employees</label>
+                  <input type="number" name="employee_count" placeholder="e.g. 5" min="1" />
+                </div>
+                <div class="ff-field">
+                  <label>Where Are They Based?</label>
+                  <input type="text" name="employee_locations" placeholder="e.g. Australia, Philippines" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ff-field">
+            <label>Do You Have Business Partners?</label>
+            <div class="ff-radio-group">
+              <label><input type="radio" name="has_partners" value="yes" onclick="toggle('partner-ownership','yes',this)"> Yes</label>
+              <label><input type="radio" name="has_partners" value="no" onclick="toggle('partner-ownership','yes',this)"> No</label>
+            </div>
+            <div class="ff-conditional" id="partner-ownership">
+              <div class="ff-field">
+                <label>Your Percentage of Ownership</label>
+                <input type="text" name="ownership_pct" placeholder="e.g. 60%" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           SECTION 3 — ASSETS
+      ============================================================ -->
+      <div class="ff-section">
+        <div class="ff-section-header">
+          <div class="ff-section-number">3</div>
+          <div class="ff-section-title">Assets</div>
+        </div>
+
+        <div class="ff-asset-block">
+          <h4>📈 Shares / Equities</h4>
+          <div class="ff-grid">
+            <div class="ff-field">
+              <label>Approximate Value <span class="ff-currency-tag" id="shares-currency">AUD</span></label>
+              <input type="text" name="shares_value" placeholder="e.g. 250,000 or N/A" />
+            </div>
+            <div class="ff-field">
+              <label>Where Are They Held?</label>
+              <input type="text" name="shares_location" placeholder="e.g. Australia (CommSec), US (Interactive Brokers)" />
+            </div>
+          </div>
+        </div>
+
+        <div class="ff-asset-block">
+          <h4>₿ Crypto</h4>
+          <div class="ff-grid">
+            <div class="ff-field">
+              <label>Approximate Value <span class="ff-currency-tag" id="crypto-currency">AUD</span></label>
+              <input type="text" name="crypto_value" placeholder="e.g. 100,000 or N/A" />
+            </div>
+            <div class="ff-field">
+              <label>Where Is It Held?</label>
+              <input type="text" name="crypto_location" placeholder="e.g. Hardware wallet (Australia), Coinbase (US)" />
+            </div>
+          </div>
+        </div>
+
+        <div class="ff-asset-block">
+          <h4>💰 Cash / Savings</h4>
+          <div class="ff-grid">
+            <div class="ff-field">
+              <label>Approximate Value <span class="ff-currency-tag" id="cash-currency">AUD</span></label>
+              <input type="text" name="cash_value" placeholder="e.g. 500,000 or N/A" />
+            </div>
+            <div class="ff-field">
+              <label>Where Is It Held?</label>
+              <input type="text" name="cash_location" placeholder="e.g. Australia (CBA), Singapore (DBS)" />
+            </div>
+          </div>
+        </div>
+
+        <div class="ff-asset-block">
+          <h4>🏢 Other Business Interests</h4>
+          <div class="ff-grid">
+            <div class="ff-field">
+              <label>Approximate Value <span class="ff-currency-tag" id="other-biz-currency">AUD</span></label>
+              <input type="text" name="other_biz_value" placeholder="e.g. 200,000 or N/A" />
+            </div>
+            <div class="ff-field">
+              <label>Location / Jurisdiction</label>
+              <input type="text" name="other_biz_location" placeholder="e.g. NZ trust, UK holding company" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           SECTION 4 — PROPERTIES
+      ============================================================ -->
+      <div class="ff-section">
+        <div class="ff-section-header">
+          <div class="ff-section-number">4</div>
+          <div class="ff-section-title">Properties Owned</div>
+        </div>
+
+        <div class="ff-field" style="margin-bottom:24px">
+          <label>How Many Properties Do You Own?</label>
+          <div class="ff-radio-group">
+            <label><input type="radio" name="num_properties" value="0" checked onclick="setProperties(0)"> 0</label>
+            <label><input type="radio" name="num_properties" value="1" onclick="setProperties(1)"> 1</label>
+            <label><input type="radio" name="num_properties" value="2" onclick="setProperties(2)"> 2</label>
+            <label><input type="radio" name="num_properties" value="3" onclick="setProperties(3)"> 3</label>
+            <label><input type="radio" name="num_properties" value="4" onclick="setProperties(4)"> 4</label>
+            <label><input type="radio" name="num_properties" value="5+" onclick="setProperties(5)"> 5+</label>
+          </div>
+        </div>
+
+        <div id="properties-container"></div>
+      </div>
+
+      <!-- ============================================================
+           SECTION 5 — EXIT TAX & GOALS
+      ============================================================ -->
+      <div class="ff-section">
+        <div class="ff-section-header">
+          <div class="ff-section-number">5</div>
+          <div class="ff-section-title">Exit Tax & Prior Advice</div>
+        </div>
+
+        <div class="ff-grid">
+          <div class="ff-field">
+            <label>Have you received any professional advice on exit tax or international structuring?</label>
+            <div class="ff-radio-group">
+              <label><input type="radio" name="prior_advice" value="yes" onclick="toggle('prior-advice-detail','yes',this)"> Yes</label>
+              <label><input type="radio" name="prior_advice" value="no" onclick="toggle('prior-advice-detail','yes',this)"> No</label>
+            </div>
+            <div class="ff-conditional" id="prior-advice-detail">
+              <div class="ff-field">
+                <label>Brief Summary of Advice Received</label>
+                <textarea name="prior_advice_detail" placeholder="What were you told? What was unclear?"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="ff-field">
+            <label>Have you already taken any steps? (moved country, opened foreign company, etc.)</label>
+            <div class="ff-radio-group">
+              <label><input type="radio" name="steps_taken" value="yes" onclick="toggle('steps-detail','yes',this)"> Yes</label>
+              <label><input type="radio" name="steps_taken" value="no" onclick="toggle('steps-detail','yes',this)"> No</label>
+            </div>
+            <div class="ff-conditional" id="steps-detail">              <div class="ff-field">
+                <label>What Have You Done So Far?</label>
+                <textarea name="steps_detail" placeholder="e.g. Moved to Bali, opened Singapore company, etc."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           SECTION 6 — GOALS
+      ============================================================ -->
+      <div class="ff-section">
+        <div class="ff-section-header">
+          <div class="ff-section-number">6</div>
+          <div class="ff-section-title">Goals & Timeline</div>
+        </div>
+
+        <div class="ff-grid">
+          <div class="ff-field ff-full">
+            <label>Primary Goal — Select All That Apply</label>
+            <div class="ff-radio-group">
+              <label><input type="checkbox" name="goals" value="reduce_ongoing_tax"> Reduce ongoing tax</label>
+              <label><input type="checkbox" name="goals" value="exit_planning"> Plan for business exit</label>
+              <label><input type="checkbox" name="goals" value="relocate"> Relocate personally</label>
+              <label><input type="checkbox" name="goals" value="structure"> International business structure</label>
+              <label><input type="checkbox" name="goals" value="banking"> International banking</label>
+              <label><input type="checkbox" name="goals" value="all"> All of the above</label>
+            </div>
+          </div>
+          <div class="ff-field">
+            <label>Do You Have a Target Country in Mind?</label>
+            <div class="ff-radio-group">
+              <label><input type="radio" name="target_country_yn" value="yes" onclick="toggle('target-country-detail','yes',this)"> Yes</label>
+              <label><input type="radio" name="target_country_yn" value="no" onclick="toggle('target-country-detail','yes',this)"> No</label>
+              <label><input type="radio" name="target_country_yn" value="exploring"> Still exploring</label>
+            </div>
+            <div class="ff-conditional" id="target-country-detail">
+              <div class="ff-field">
+                <label>Which Country?</label>
+                <input type="text" name="target_country" placeholder="e.g. UAE, Singapore, Paraguay" />
+              </div>
+            </div>
+          </div>
+          <div class="ff-field">
+            <label>Intended Timeline</label>
+            <select name="timeline">
+              <option value="">Select</option>
+              <option>Within 3 months</option>
+              <option>3–6 months</option>
+              <option>6–12 months</option>
+              <option>1–2 years</option>
+              <option>Just exploring for now</option>
+            </select>
+          </div>
+          <div class="ff-field ff-full">
+            <label>Anything Else You'd Like Us to Know Before the Call?</label>
+            <textarea name="additional_notes" placeholder="Any other context, concerns, or questions..." style="min-height:100px"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           SUBMIT
+      ============================================================ -->
+      <div class="ff-submit-section">
+        <p>Your information is kept strictly confidential and used only to prepare for your consultation.<br>You'll receive a confirmation email once submitted.</p>
+        <button type="submit" class="ff-submit">Submit Fact Find →</button>
+      </div>
+
+    </form>
+
+    <div class="ff-success" id="ff-success">
+      <h2>✓ Received</h2>
+      <p>Thanks — we'll review your fact find before the call.<br>You'll hear from us shortly to confirm your consultation time.</p>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-brand">International Broker Co</span>
+      <span class="footer-tagline">For Borderless Founders</span>
+      <span class="footer-copy">© 2026 International Broker Co. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script>
+    // ---- Currency map ----
+    const CURRENCIES = {
+      AU: 'AUD', GB: 'GBP', US: 'USD', CA: 'CAD',
+      NZ: 'NZD', SG: 'SGD', AE: 'AED', OTHER: 'Local'
+    };
+    const CURRENCY_TAGS = [
+      'revenue-currency','profit-currency','future-val-currency',
+      'valuation-currency','costbase-currency','cgt-currency',
+      'salary-currency','shares-currency','crypto-currency',
+      'cash-currency','other-biz-currency'
+    ];
+    function updateCurrency() {
+      const val = document.getElementById('business_location').value;
+      const label = CURRENCIES[val] || 'AUD';
+      CURRENCY_TAGS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = label;
+      });
+      // update property currency tags too
+      document.querySelectorAll('.prop-currency').forEach(el => el.textContent = label);
+    }
+
+    // ---- Conditional show/hide ----
+    function toggle(id, showVal, radio) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (radio.value === showVal) {
+        el.classList.add('active');
+      } else {
+        el.classList.remove('active');
+      }
+    }
+
+    // ---- Property blocks ----
+    function setProperties(n) {
+      const container = document.getElementById('properties-container');
+      container.innerHTML = '';
+      for (let i = 1; i <= n; i++) {
+        container.innerHTML += propertyBlock(i);
+      }
+      if (n === 5) {
+        container.innerHTML += propertyBlock(5);
+        container.innerHTML += `<button type="button" id="add-property" onclick="addProperty()">+ Add Another Property</button>`;
+      }
+    }
+
+    let propCount = 0;
+    function addProperty() {
+      propCount++;
+      const container = document.getElementById('properties-container');
+      const btn = document.getElementById('add-property');
+      const div = document.createElement('div');
+      div.innerHTML = propertyBlock(5 + propCount);
+      container.insertBefore(div.firstElementChild, btn);
+    }
+
+    function propertyBlock(n) {
+      const curr = CURRENCIES[document.getElementById('business_location').value] || 'AUD';
+      return `
+        <div class="ff-property-block">
+          <h4>Property ${n}</h4>
+          <div class="ff-grid" style="margin-bottom:16px">
+            <div class="ff-field ff-full">
+              <label>Address</label>
+              <input type="text" name="prop_${n}_address" placeholder="Full address including country" />
+            </div>
+            <div class="ff-field">
+              <label>Current Value <span class="ff-currency-tag prop-currency">${curr}</span></label>
+              <input type="text" name="prop_${n}_value" placeholder="e.g. 850,000" />
+            </div>
+            <div class="ff-field">
+              <label>Purchase Price <span class="ff-currency-tag prop-currency">${curr}</span></label>
+              <input type="text" name="prop_${n}_purchase_price" placeholder="e.g. 600,000" />
+            </div>
+            <div class="ff-field">
+              <label>Purchase Date</label>
+              <input type="date" name="prop_${n}_purchase_date" />
+            </div>
+            <div class="ff-field">
+              <label>Current Debt / Mortgage <span class="ff-currency-tag prop-currency">${curr}</span></label>
+              <input type="text" name="prop_${n}_debt" placeholder="e.g. 420,000 or None" />
+            </div>
+            <div class="ff-field">
+              <label>Lender / Bank</label>
+              <input type="text" name="prop_${n}_lender" placeholder="e.g. CBA, ANZ" />
+            </div>
+            <div class="ff-field">
+              <label>Usage</label>
+              <select name="prop_${n}_usage">
+                <option value="">Select</option>
+                <option>Owner Occupied</option>
+                <option>Investment</option>
+                <option>Both (partially rented)</option>
+                <option>Vacant Land</option>
+                <option>Commercial</option>
+              </select>
+            </div>
+            <div class="ff-field">
+              <label>Rental Income Per Annum <span class="ff-currency-tag prop-currency">${curr}</span></label>
+              <input type="text" name="prop_${n}_rental" placeholder="e.g. 28,000 or N/A" />
+            </div>
+          </div>
+        </div>`;
+    }
+
+    // ---- Form submit to Formspree ----
+    const form = document.getElementById('ff-form');
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = form.querySelector('.ff-submit');
+      btn.textContent = 'Submitting...';
+      btn.disabled = true;
+
+      const data = new FormData(form);
+      try {
+        const res = await fetch('https://formspree.io/f/xbljonqk', {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          form.style.display = 'none';
+          document.getElementById('ff-success').classList.add('active');
+        } else {
+          btn.textContent = 'Submit Fact Find →';
+          btn.disabled = false;
+          alert('Something went wrong. Please try again.');
+        }
+      } catch(err) {
+        btn.textContent = 'Submit Fact Find →';
+        btn.disabled = false;
+        alert('Connection error. Please try again.');
+      }
+    });
+  </script>
+
+</body>
+</html>
