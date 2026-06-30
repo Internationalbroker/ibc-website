@@ -1120,7 +1120,66 @@
 
       const formData = new FormData(form);
       const data = Object.fromEntries(formData);
-      
+
+      // Parse money strings -> integer. Handles "$1,200,000", "1.1m", "240k", "1.2 mil", "N/A".
+      function parseMoney(v){
+        if(v==null) return null;
+        let s=String(v).toLowerCase().trim();
+        if(!s || s==='n/a' || s==='na' || s==='-') return null;
+        s=s.replace(/aud|usd|\$|,|\s/g,'');
+        let mult=1;
+        let m=s.match(/([\d.]+)\s*(k|m|mil|million|b)?$/);
+        if(!m) { const n=parseFloat(s.replace(/[^\d.]/g,'')); return isNaN(n)?null:Math.round(n); }
+        const num=parseFloat(m[1]);
+        if(isNaN(num)) return null;
+        const unit=m[2]||'';
+        if(unit==='k') mult=1e3;
+        else if(unit==='m'||unit==='mil'||unit==='million') mult=1e6;
+        else if(unit==='b') mult=1e9;
+        return Math.round(num*mult);
+      }
+
+      // Build a human-readable notes summary from the rich fact-find fields.
+      function buildNotes(d){
+        const parts=[];
+        const add=(label,val)=>{ if(val!=null && String(val).trim()!=='' && String(val).toLowerCase()!=='n/a') parts.push(label+': '+String(val).trim()); };
+        add('Business', d.business_description);
+        add('Structure', d.business_structure);
+        add('Location', d.business_location);
+        add('Operating', d.time_operating);
+        add('Profit', d.profit);
+        if(d.business_value) add('Est. business value', d.business_value);
+        if(d.cgt_exposure) add('CGT exposure', d.cgt_exposure);
+        add('Tax residency', d.tax_residency);
+        if(d.foreign_tax_residency==='yes') add('Foreign tax residency', d.foreign_tax_residency_country);
+        const assets=[];
+        if(d.cash_value && d.cash_value.toLowerCase()!=='n/a') assets.push('Cash '+d.cash_value+(d.cash_location?(' ('+d.cash_location+')'):''));
+        if(d.shares_value && d.shares_value.toLowerCase()!=='n/a') assets.push('Shares '+d.shares_value);
+        if(d.crypto_value && d.crypto_value.toLowerCase()!=='n/a') assets.push('Crypto '+d.crypto_value);
+        if(assets.length) parts.push('Assets: '+assets.join('; '));
+        if(d.num_properties && d.num_properties!=='0') add('Properties', d.num_properties);
+        if(d.goals) add('Goals', Array.isArray(d.goals)?d.goals.join(', '):d.goals);
+        if(d.steps_detail) add('Steps taken', d.steps_detail);
+        if(d.prior_advice_detail) add('Prior advice', d.prior_advice_detail);
+        return parts.join(' | ');
+      }
+
+      const fullPhone = [data.phone_country, data.phone].filter(Boolean).join(' ').trim();
+
+      // Structured row for the CRM `clients` table (this is what the CRM reads).
+      const clientRow = {
+        full_name: data.full_name || null,
+        email: data.email || null,
+        phone: fullPhone || null,
+        business_name: data.business_name || null,
+        business_type: data.business_structure || null,
+        current_revenue: parseMoney(data.revenue),
+        goal_revenue: parseMoney(data.future_value),
+        status: 'lead',
+        source: 'website_form',
+        notes: buildNotes(data) || null
+      };
+
       try {
         // 1. Submit to Formspree (existing email backup)
         const formspreeRes = await fetch('https://formspree.io/f/xlgyedby', {
@@ -1134,6 +1193,7 @@
         const supabaseKey = 'sb_publishable_xtAlm6TLISW8HtcbMyaO7A_4vufjcjG';
         
         try {
+          // 2a. Raw archive (kept for audit / full detail)
           const supabaseRes = await fetch(
             supabaseUrl + '/rest/v1/form_submissions',
             {
@@ -1146,15 +1206,36 @@
               body: JSON.stringify({
                 submission_data: data,
                 source: 'website_form',
-                processed: false
+                processed: true
               })
             }
           );
           
           if (supabaseRes.ok) {
-            console.log('✅ Supabase submission successful');
+            console.log('✅ Supabase archive successful');
           } else {
-            console.error('❌ Supabase error:', supabaseRes.status, await supabaseRes.text());
+            console.error('❌ Supabase archive error:', supabaseRes.status, await supabaseRes.text());
+          }
+
+          // 2b. Structured insert into CRM `clients` table -> appears in CRM pipeline
+          const crmRes = await fetch(
+            supabaseUrl + '/rest/v1/clients',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'apikey': supabaseKey,
+                'Authorization': 'Bearer ' + supabaseKey,
+                'Prefer': 'return=minimal'
+              },
+              body: JSON.stringify(clientRow)
+            }
+          );
+
+          if (crmRes.ok) {
+            console.log('✅ CRM client insert successful');
+          } else {
+            console.error('❌ CRM client insert error:', crmRes.status, await crmRes.text());
           }
         } catch (err) {
           console.error('❌ Supabase fetch error:', err);
