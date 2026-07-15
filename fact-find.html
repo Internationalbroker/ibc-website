@@ -162,6 +162,19 @@
       background: rgba(107,124,74,0.06);
     }
 
+    .ff-prefill-banner {
+      display: none;
+      margin-bottom: 28px;
+      padding: 18px 20px;
+      border-radius: 8px;
+      border: 1.5px solid var(--olive);
+      background: rgba(107,124,74,0.08);
+      color: var(--charcoal);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .ff-prefill-banner strong { color: var(--olive); }
+
     /* Conditional sections */
     .ff-conditional {
       display: none;
@@ -304,6 +317,10 @@
   </div>
 
   <div class="ff-body">
+
+    <div class="ff-prefill-banner" id="ff-prefill-banner">
+      <strong>Calculator details imported.</strong> We have pre-filled the business, valuation and exit-tax fields from the calculator. Please review and correct anything that is not quite right before submitting.
+    </div>
 
     <form id="ff-form">
 
@@ -1109,6 +1126,64 @@
           </div>
         </div>`;
     }
+
+    // ---- Calculator prefill handoff ----
+    function base64UrlDecode(str) {
+      const padded = str.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat((4 - str.length % 4) % 4);
+      const binary = atob(padded);
+      const escaped = Array.from(binary).map(ch => '%' + ch.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+      return decodeURIComponent(escaped);
+    }
+
+    function setField(name, value) {
+      if (value == null || value === '') return;
+      const fields = Array.from(form.querySelectorAll(`[name="${CSS.escape(name)}"]`));
+      if (!fields.length) return;
+      const values = Array.isArray(value) ? value.map(String) : [String(value)];
+      fields.forEach(field => {
+        if (field.type === 'radio' || field.type === 'checkbox') {
+          field.checked = values.includes(field.value);
+          if (field.checked && typeof field.onclick === 'function') field.onclick.call(field);
+        } else {
+          field.value = values[0];
+          field.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
+    }
+
+    function getCalculatorPrefill() {
+      const params = new URLSearchParams(window.location.search);
+      const encoded = params.get('prefill');
+      if (encoded) {
+        try { return JSON.parse(base64UrlDecode(encoded)); }
+        catch (err) { console.warn('Invalid calculator prefill payload', err); }
+      }
+      const fallback = {};
+      params.forEach((value, key) => {
+        if (key !== 'prefill') fallback[key] = value;
+      });
+      return Object.keys(fallback).length ? fallback : null;
+    }
+
+    function applyCalculatorPrefill() {
+      const prefill = getCalculatorPrefill();
+      if (!prefill) return;
+      Object.entries(prefill).forEach(([name, value]) => setField(name, value));
+      updateCurrency();
+      if (prefill.cgt_aware) {
+        const radio = form.querySelector(`[name="cgt_aware"][value="${CSS.escape(prefill.cgt_aware)}"]`);
+        if (radio) toggle('cgt-detail', 'yes', radio);
+      }
+      if (prefill.business_valued) {
+        const radio = form.querySelector(`[name="business_valued"][value="${CSS.escape(prefill.business_valued)}"]`);
+        if (radio) toggle('valuation-detail', 'yes', radio);
+      }
+      const banner = document.getElementById('ff-prefill-banner');
+      if (banner) banner.style.display = 'block';
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    document.addEventListener('DOMContentLoaded', applyCalculatorPrefill);
 
     // ---- Form submit to Formspree + Supabase ----
     const form = document.getElementById('ff-form');

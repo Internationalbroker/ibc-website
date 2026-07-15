@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exit Tax Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .form-container {
+            padding: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 1.1em;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .valuation-helper {
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .valuation-helper h4 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+        
+        .multiple-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .multiple-option {
+            background: white;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .multiple-option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .multiple-option.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+        
+        .estimated-value {
+            background: #e8f5e8;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2e7d32;
+        }
+        
+        .jurisdiction-specific {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .calculate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .calculate-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .results {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+            border: 1px solid #e1e5e9;
+        }
+        
+        .results h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .calculation-detail {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2a5298;
+        }
+        
+        .savings {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+        
+        .urgency {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+        
+        .service-fee {
+            background: #1e3c72;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.1em;
+            margin: 15px 0;
+        }
+
+        .fact-find-cta {
+            display: none;
+            margin-top: 24px;
+            padding: 24px;
+            border-radius: 10px;
+            background: #f0f4ff;
+            border: 2px solid #667eea;
+            text-align: center;
+        }
+
+        .fact-find-cta h3 {
+            color: #1e3c72;
+            margin-bottom: 8px;
+        }
+
+        .fact-find-cta p {
+            color: #555;
+            margin-bottom: 16px;
+        }
+
+        .fact-find-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            text-decoration: none;
+            padding: 14px 22px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+        
+        .currency-note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            color: #856404;
+            text-align: center;
+        }
+        
+        .ebitda-note {
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            color: #1565c0;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .form-container {
+                padding: 30px 20px;
+            }
+            
+            .multiple-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Exit Tax Calculator</h1>
+            <p>Calculate your potential tax liability when exiting your home country</p>
+        </div>
+        
+        <div class="form-container">
+            <form id="exitTaxForm">
+                <div class="form-group">
+                    <label>Current Tax Jurisdiction:</label>
+                    <select id="jurisdiction" onchange="updateCurrency()">
+                        <option value="">Select your country...</option>
+                        <option value="australia">Australia</option>
+                        <option value="uk">United Kingdom</option>
+                        <option value="canada">Canada</option>
+                    </select>
+                </div>
+                
+                <div id="currencyNote" class="currency-note" style="display:none;"></div>
+
+                <div class="form-group">
+                    <label>Annual EBITDA (Earnings Before Interest, Tax, Depreciation, Amortization) <span id="currencyLabel">(USD)</span>:</label>
+                    <input type="number" id="ebitda" placeholder="500,000" onchange="calculateEstimatedValue()">
+                    <div class="ebitda-note">
+                        💡 EBITDA = Net Profit + Interest + Tax + Depreciation + Amortization<br>
+                        This is your business's cash generation before financing and accounting adjustments.
+                    </div>
+                </div>
+                
+                <div class="valuation-helper">
+                    <h4>Business Type & EBITDA Multiple</h4>
+                    <p>Select your business type to estimate value based on EBITDA:</p>
+                    
+                    <div class="multiple-selector">
+                        <div class="multiple-option" onclick="selectMultiple(4, 'Professional Services')" data-multiple="4">
+                            <div>Professional Services</div>
+                            <small>3-6x EBITDA</small>
+                        </div>
+                        <div class="multiple-option" onclick="selectMultiple(8, 'SaaS/Tech')" data-multiple="8">
+                            <div>SaaS/Tech</div>
+                            <small>6-12x EBITDA</small>
+                        </div>
+                        <div class="multiple-option" onclick="selectMultiple(6, 'Manufacturing')" data-multiple="6">
+                            <div>Manufacturing</div>
+                            <small>4-8x EBITDA</small>
+                        </div>
+                        <div class="multiple-option" onclick="selectMultiple(5, 'Healthcare')" data-multiple="5">
+                            <div>Healthcare</div>
+                            <small>4-7x EBITDA</small>
+                        </div>
+                        <div class="multiple-option" onclick="selectMultiple(4, 'Retail/Ecommerce')" data-multiple="4">
+                            <div>Retail/Ecommerce</div>
+                            <small>3-6x EBITDA</small>
+                        </div>
+                        <div class="multiple-option" onclick="selectMultiple(5, 'Other')" data-multiple="5">
+                            <div>Other</div>
+                            <small>4-6x EBITDA</small>
+                        </div>
+                    </div>
+                    
+                    <div id="estimatedValue" class="estimated-value" style="display:none;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Original Investment/Cost Base <span id="costCurrencyLabel">(USD)</span>:</label>
+                    <input type="number" id="costBase" placeholder="100,000">
+                </div>
+
+                <div class="form-group">
+                    <label>Business Acquisition Date:</label>
+                    <input type="date" id="acquisitionDate">
+                </div>
+
+                <div class="form-group">
+                    <label>Intended Exit Date:</label>
+                    <input type="date" id="exitDate">
+                </div>
+
+                <div class="form-group">
+                    <label>Business Structure:</label>
+                    <select id="structure">
+                        <option value="individual">Individual</option>
+                        <option value="company">Company</option>
+                        <option value="trust">Trust/Partnership</option>
+                    </select>
+                </div>
+
+                <!-- Australia specific -->
+                <div id="australiaFields" class="jurisdiction-specific" style="display:none;">
+                    <h3 style="margin-bottom: 15px; color: #1e3c72;">Australia-Specific Questions</h3>
+                    <div class="form-group">
+                        <label>Family trust with income splitting arrangements?</label>
+                        <select id="familyTrust">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- UK specific -->
+                <div id="ukFields" class="jurisdiction-specific" style="display:none;">
+                    <h3 style="margin-bottom: 15px; color: #1e3c72;">UK-Specific Questions</h3>
+                    <div class="form-group">
+                        <label>Business Asset Disposal Relief eligible?</label>
+                        <select id="badr">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Do you plan to return to UK within 5 years?</label>
+                        <select id="returnPlan">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Canada specific -->
+                <div id="canadaFields" class="jurisdiction-specific" style="display:none;">
+                    <h3 style="margin-bottom: 15px; color: #1e3c72;">Canada-Specific Questions</h3>
+                    <div class="form-group">
+                        <label>Qualified Small Business Corporation shares?</label>
+                        <select id="qsbc">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="button" class="calculate-btn" onclick="calculateTax()" id="calculateBtn" disabled>Select Country First</button>
+            </form>
+
+            <div id="results" style="display:none;" class="results">
+                <h2>Exit Tax Calculation Results</h2>
+                <div id="calculation" class="calculation-detail"></div>
+                <div class="service-fee" id="serviceFee">Our offshore setup service fee: $8,000 USD</div>
+                <div id="savings" class="savings"></div>
+                <div id="urgency"></div>
+                <div id="factFindCta" class="fact-find-cta">
+                    <h3>Ready to continue?</h3>
+                    <p>Send these calculator inputs into the client fact-find so you do not need to re-enter the business and exit-tax details.</p>
+                    <a id="factFindLink" class="fact-find-link" href="../fact-find.html">Continue to pre-filled fact find →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedMultiple = 0;
+        let selectedBusinessType = '';
+        let currentCurrency = 'USD';
+        let currentCurrencySymbol = '$';
+        
+        const exchangeRates = {
+            'USD': 1,
+            'AUD': 0.65,  // 1 AUD = 0.65 USD
+            'GBP': 1.25,  // 1 GBP = 1.25 USD  
+            'CAD': 0.72   // 1 CAD = 0.72 USD
+        };
+        
+        const currencySymbols = {
+            'USD': '$',
+            'AUD': 'A$',
+            'GBP': '£',
+            'CAD': 'C$'
+        };
+
+        function updateCurrency() {
+            const jurisdiction = document.getElementById('jurisdiction').value;
+            const currencyNote = document.getElementById('currencyNote');
+            const calculateBtn = document.getElementById('calculateBtn');
+            
+            // Hide all jurisdiction-specific fields
+            document.getElementById('australiaFields').style.display = 'none';
+            document.getElementById('ukFields').style.display = 'none';
+            document.getElementById('canadaFields').style.display = 'none';
+            
+            if (jurisdiction === 'australia') {
+                currentCurrency = 'AUD';
+                currentCurrencySymbol = 'A$';
+                document.getElementById('australiaFields').style.display = 'block';
+                currencyNote.innerHTML = '💰 All amounts shown in Australian Dollars (AUD)';
+                currencyNote.style.display = 'block';
+                calculateBtn.disabled = false;
+                calculateBtn.innerHTML = 'Calculate Exit Tax';
+            } else if (jurisdiction === 'uk') {
+                currentCurrency = 'GBP';
+                currentCurrencySymbol = '£';
+                document.getElementById('ukFields').style.display = 'block';
+                currencyNote.innerHTML = '💰 All amounts shown in British Pounds (GBP)';
+                currencyNote.style.display = 'block';
+                calculateBtn.disabled = false;
+                calculateBtn.innerHTML = 'Calculate Exit Tax';
+            } else if (jurisdiction === 'canada') {
+                currentCurrency = 'CAD';
+                currentCurrencySymbol = 'C$';
+                document.getElementById('canadaFields').style.display = 'block';
+                currencyNote.innerHTML = '💰 All amounts shown in Canadian Dollars (CAD)';
+                currencyNote.style.display = 'block';
+                calculateBtn.disabled = false;
+                calculateBtn.innerHTML = 'Calculate Exit Tax';
+            } else {
+                currentCurrency = 'USD';
+                currentCurrencySymbol = '$';
+                currencyNote.style.display = 'none';
+                calculateBtn.disabled = true;
+                calculateBtn.innerHTML = 'Select Country First';
+            }
+            
+            // Update currency labels
+            document.getElementById('currencyLabel').textContent = `(${currentCurrency})`;
+            document.getElementById('costCurrencyLabel').textContent = `(${currentCurrency})`;
+            
+            // Recalculate estimated value if we have data
+            calculateEstimatedValue();
+            
+            // Update service fee display
+            updateServiceFeeDisplay();
+        }
+
+        function selectMultiple(multiple, businessType) {
+            selectedMultiple = multiple;
+            selectedBusinessType = businessType;
+            
+            // Update visual selection
+            document.querySelectorAll('.multiple-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            event.target.closest('.multiple-option').classList.add('selected');
+            
+            // Recalculate estimated value
+            calculateEstimatedValue();
+        }
+
+        function calculateEstimatedValue() {
+            const ebitda = parseFloat(document.getElementById('ebitda').value) || 0;
+            const estimatedValueDiv = document.getElementById('estimatedValue');
+            
+            if (ebitda > 0 && selectedMultiple > 0) {
+                const estimatedValue = ebitda * selectedMultiple;
+                estimatedValueDiv.innerHTML = `Estimated ${selectedBusinessType} Value: ${formatCurrency(estimatedValue, currentCurrency)}<br><small>(${formatCurrency(ebitda, currentCurrency)} EBITDA × ${selectedMultiple}x multiple)</small>`;
+                estimatedValueDiv.style.display = 'block';
+            } else {
+                estimatedValueDiv.style.display = 'none';
+            }
+        }
+        
+        function updateServiceFeeDisplay() {
+            const serviceFeeDiv = document.getElementById('serviceFee');
+            const feeInLocalCurrency = 8000 / exchangeRates[currentCurrency];
+            serviceFeeDiv.innerHTML = `Our offshore setup service fee: ${formatCurrency(feeInLocalCurrency, currentCurrency)} (${formatCurrency(8000, 'USD')})`;
+        }
+
+        function formatCurrency(amount, currency = currentCurrency) {
+            const symbol = currencySymbols[currency] || '$';
+            const formatted = new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+            }).format(amount);
+            return `${symbol}${formatted}`;
+        }
+
+        function convertToUSD(amount, fromCurrency) {
+            return amount * exchangeRates[fromCurrency];
+        }
+
+        function convertFromUSD(amount, toCurrency) {
+            return amount / exchangeRates[toCurrency];
+        }
+
+        function base64UrlEncode(obj) {
+            const json = JSON.stringify(obj);
+            const utf8 = encodeURIComponent(json).replace(/%([0-9A-F]{2})/g, (_, p1) => String.fromCharCode('0x' + p1));
+            return btoa(utf8).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+        }
+
+        function cleanNumber(value) {
+            return Math.round(Number(value) || 0).toString();
+        }
+
+        function jurisdictionToFactFindCountry(jurisdiction) {
+            return { australia: 'Australia', uk: 'United Kingdom', canada: 'Canada' }[jurisdiction] || '';
+        }
+
+        function jurisdictionToBusinessLocation(jurisdiction) {
+            return { australia: 'AU', uk: 'GB', canada: 'CA' }[jurisdiction] || '';
+        }
+
+        function structureToFactFind(structure) {
+            return { individual: 'Sole Trader', company: 'Company / Pty Ltd / Ltd', trust: 'Trust' }[structure] || '';
+        }
+
+        function buildFactFindPayload(result) {
+            const jurisdiction = document.getElementById('jurisdiction').value;
+            const ebitda = parseFloat(document.getElementById('ebitda').value) || 0;
+            const costBase = parseFloat(document.getElementById('costBase').value) || 0;
+            const structure = document.getElementById('structure').value;
+            const acquisitionDate = document.getElementById('acquisitionDate').value;
+            const exitDate = document.getElementById('exitDate').value;
+            const country = jurisdictionToFactFindCountry(jurisdiction);
+            const businessType = selectedBusinessType || 'General';
+            const multiple = selectedMultiple || 5;
+            const businessValue = result && result.businessValue ? result.businessValue : ebitda * multiple;
+            const capitalGain = result && result.capitalGain ? result.capitalGain : Math.max(0, businessValue - costBase);
+            const exitTax = result && result.exitTax ? result.exitTax : 0;
+
+            return {
+                source: 'exit_tax_calculator',
+                tax_residency: country,
+                business_location: jurisdictionToBusinessLocation(jurisdiction),
+                business_structure: structureToFactFind(structure),
+                profit: cleanNumber(ebitda),
+                business_value: cleanNumber(businessValue),
+                future_value: cleanNumber(businessValue),
+                cost_base: cleanNumber(costBase),
+                cgt_aware: exitTax > 0 ? 'yes' : 'no',
+                cgt_exposure: cleanNumber(exitTax),
+                business_valued: 'yes',
+                goals: ['reduce_ongoing_tax', 'exit_planning', 'relocate', 'structure'],
+                additional_notes: [
+                    'Imported from International Broker Co exit tax calculator.',
+                    `Calculator jurisdiction: ${country || jurisdiction}`,
+                    `Annual EBITDA entered: ${formatCurrency(ebitda)}`,
+                    `Business type / multiple: ${businessType} ${multiple}x`,
+                    `Estimated business value: ${formatCurrency(businessValue)}`,
+                    `Original cost base: ${formatCurrency(costBase)}`,
+                    `Estimated capital gain: ${formatCurrency(capitalGain)}`,
+                    `Estimated exit tax: ${formatCurrency(exitTax)}`,
+                    acquisitionDate ? `Business acquisition date: ${acquisitionDate}` : null,
+                    exitDate ? `Intended exit date: ${exitDate}` : null,
+                    'Please confirm all figures before relying on this fact-find.'
+                ].filter(Boolean).join('\n')
+            };
+        }
+
+        function updateFactFindLink(result) {
+            const payload = buildFactFindPayload(result);
+            const encoded = base64UrlEncode(payload);
+            const link = document.getElementById('factFindLink');
+            link.href = `../fact-find.html?prefill=${encoded}`;
+            document.getElementById('factFindCta').style.display = 'block';
+        }
+
+        function calculateTax() {
+            const jurisdiction = document.getElementById('jurisdiction').value;
+            const ebitda = parseFloat(document.getElementById('ebitda').value) || 0;
+            const costBase = parseFloat(document.getElementById('costBase').value) || 0;
+            const exitDate = new Date(document.getElementById('exitDate').value);
+            const structure = document.getElementById('structure').value;
+            
+            if (!jurisdiction || ebitda <= 0) {
+                alert('Please fill in all required fields with valid values.');
+                return;
+            }
+            
+            // Calculate business value using EBITDA multiple
+            let businessValue = ebitda;
+            if (selectedMultiple > 0) {
+                businessValue = ebitda * selectedMultiple;
+            } else {
+                // Default to 5x EBITDA if no multiple selected
+                businessValue = ebitda * 5;
+                selectedBusinessType = 'General (5x EBITDA)';
+                selectedMultiple = 5;
+            }
+            
+            const capitalGain = businessValue - costBase;
+            let exitTax = 0;
+            let calculation = '';
+            let urgency = '';
+
+            if (jurisdiction === 'australia') {
+                const isAfter2027 = exitDate >= new Date('2027-07-01');
+                const isAfter2028 = exitDate >= new Date('2028-07-01');
+                const familyTrust = document.getElementById('familyTrust').value === 'yes';
+                
+                if (!isAfter2027) {
+                    // Current rules - 50% discount
+                    if (structure === 'individual') {
+                        const taxableGain = capitalGain * 0.5; // 50% discount
+                        exitTax = taxableGain * 0.45; // Top marginal rate
+                        calculation = `<strong>Current Rules (Pre-July 2027):</strong><br>
+                                     Annual EBITDA: ${formatCurrency(ebitda)}<br>
+                                     Business Value: ${formatCurrency(businessValue)} (${selectedBusinessType} ${selectedMultiple}x)<br>
+                                     Capital gain: ${formatCurrency(capitalGain)}<br>
+                                     50% CGT discount applied<br>
+                                     Taxable gain: ${formatCurrency(taxableGain)}<br>
+                                     Tax rate: 45%<br>
+                                     <strong>Exit tax: ${formatCurrency(exitTax)}</strong>`;
+                    } else {
+                        exitTax = capitalGain * 0.3; // Company rate
+                        calculation = `<strong>Current Rules (Pre-July 2027):</strong><br>
+                                     Annual EBITDA: ${formatCurrency(ebitda)}<br>
+                                     Business Value: ${formatCurrency(businessValue)} (${selectedBusinessType} ${selectedMultiple}x)<br>
+                                     Capital gain: ${formatCurrency(capitalGain)}<br>
+                                     Company structure - no discount<br>
+                                     Tax rate: 30%<br>
+                                     <strong>Exit tax: ${formatCurrency(exitTax)}</strong>`;
+                    }
+                    urgency = `🚨 CRITICAL: Exit before July 1, 2027 to keep 50% CGT discount! Your window is closing fast.`;
+                } else {
+                    // New rules - 30% minimum, indexation
+                    const inflationAdjustment = capitalGain * 0.1; // Rough estimate
+                    const adjustedGain = Math.max(capitalGain - inflationAdjustment, capitalGain * 0.7);
+                    exitTax = adjustedGain * 0.3; // 30% minimum
+                    calculation = `<strong>New Rules (Post-July 2027):</strong><br>
+                                 Annual EBITDA: ${formatCurrency(ebitda)}<br>
+                                 Business Value: ${formatCurrency(businessValue)} (${selectedBusinessType} ${selectedMultiple}x)<br>
+                                 Capital gain: ${formatCurrency(capitalGain)}<br>
+                                 Inflation adjustment: ~${formatCurrency(inflationAdjustment)}<br>
+                                 Real gain: ${formatCurrency(adjustedGain)}<br>
+                                 30% minimum rate applies<br>
+                                 <strong>Exit tax: ${formatCurrency(exitTax)}</strong>`;
+                    
+                    if (isAfter2028 && familyTrust) {
+                        urgency = `⚠️ MAXIMUM IMPACT: Both CGT changes AND 30% trust distribution minimum apply. Family trust tax planning is effectively dead.`;
+                    } else if (isAfter2028) {
+                        urgency = `⚠️ New regime in full effect: 30% minimum CGT rate + trust distribution changes.`;
+                    } else {
+                        urgency = `⚠️ New CGT regime: No more 50% discount, 30% minimum rate applies.`;
+                    }
+                }
+            } else if (jurisdiction === 'uk') {
+                const badr = document.getElementById('badr').value === 'yes';
+                const returnPlan = document.getElementById('returnPlan').value === 'yes';
+                
+                exitTax = capitalGain * (badr ? 0.1 : 0.2);
+                calculation = `<strong>UK Capital Gains Tax:</strong><br>
+                             Annual EBITDA: ${formatCurrency(ebitda)}<br>
+                             Business Value: ${formatCurrency(businessValue)} (${selectedBusinessType} ${selectedMultiple}x)<br>
+                             Capital gain: ${formatCurrency(capitalGain)}<br>
+                             CGT rate: ${badr ? '10% (Business Asset Disposal Relief)' : '20% (Standard rate)'}<br>
+                             <strong>Exit tax: ${formatCurrency(exitTax)}</strong>`;
+                
+                if (returnPlan) {
+                    urgency = `⚠️ WARNING: 5-year temporary non-residence rule applies. If you return to UK within 5 years, gains will still be taxable in the UK.`;
+                } else {
+                    urgency = `✅ Clean exit possible if you stay non-resident for 5+ years.`;
+                }
+            } else if (jurisdiction === 'canada') {
+                const qsbc = document.getElementById('qsbc').value === 'yes';
+                const exemptionUSD = qsbc ? 971000 : 0; // 2024 Lifetime Capital Gains Exemption in USD
+                const exemption = convertFromUSD(exemptionUSD, currentCurrency);
+                const taxableGain = Math.max(0, capitalGain - exemption);
+                exitTax = taxableGain * 0.26; // Approximate combined federal/provincial rate
+                
+                calculation = `<strong>Canada Departure Tax:</strong><br>
+                             Annual EBITDA: ${formatCurrency(ebitda)}<br>
+                             Business Value: ${formatCurrency(businessValue)} (${selectedBusinessType} ${selectedMultiple}x)<br>
+                             Capital gain: ${formatCurrency(capitalGain)}<br>
+                             ${qsbc ? `Lifetime Capital Gains Exemption: ${formatCurrency(exemption)}<br>` : ''}
+                             Taxable gain: ${formatCurrency(taxableGain)}<br>
+                             Effective tax rate: ~26%<br>
+                             <strong>Exit tax: ${formatCurrency(exitTax)}</strong>`;
+                
+                urgency = `💡 Security posting required for deferral. Consider timing of departure and realization of gains.`;
+            }
+
+            const serviceFeeLocal = 8000 / exchangeRates[currentCurrency];
+            const netSavings = exitTax - serviceFeeLocal;
+            const roi = netSavings > 0 ? (netSavings / serviceFeeLocal).toFixed(1) : 0;
+            
+            document.getElementById('calculation').innerHTML = calculation;
+            
+            if (netSavings > 0) {
+                document.getElementById('savings').innerHTML = `💰 Your net savings after our fee: ${formatCurrency(netSavings)}<br>ROI: ${roi}x return on investment`;
+                document.getElementById('savings').style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+                document.getElementById('savings').style.color = 'white';
+                document.getElementById('savings').style.display = 'block';
+            } else if (exitTax > 0) {
+                document.getElementById('savings').innerHTML = `⚠️ Your estimated exit tax (${formatCurrency(exitTax)}) is less than our service fee. However, we may identify additional strategies and optimizations during consultation.`;
+                document.getElementById('savings').style.background = 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)';
+                document.getElementById('savings').style.color = '#333';
+                document.getElementById('savings').style.display = 'block';
+            } else {
+                document.getElementById('savings').innerHTML = `🔍 Based on these estimates, your capital gain appears minimal. Let's discuss your full situation - there may be other tax considerations we should address.`;
+                document.getElementById('savings').style.background = 'linear-gradient(135deg, #74b9ff 0%, #0984e3 100%)';
+                document.getElementById('savings').style.color = 'white';
+                document.getElementById('savings').style.display = 'block';
+            }
+            
+            if (urgency) {
+                document.getElementById('urgency').innerHTML = urgency;
+                document.getElementById('urgency').style.display = 'block';
+            }
+            
+            updateFactFindLink({ businessValue, capitalGain, exitTax });
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Set default dates
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const nextYear = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
+            
+            // Set acquisition date to 5 years ago as default
+            const fiveYearsAgo = new Date(today.getFullYear() - 5, today.getMonth(), today.getDate());
+            document.getElementById('acquisitionDate').value = fiveYearsAgo.toISOString().split('T')[0];
+            
+            // Set exit date to next year as default
+            document.getElementById('exitDate').value = nextYear.toISOString().split('T')[0];
+        });
+    </script>
+</body>
+</html>
