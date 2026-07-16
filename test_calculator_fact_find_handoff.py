@@ -30,6 +30,13 @@ class CalculatorFactFindHandoffTests(unittest.TestCase):
         self.assertIn('Object.entries(prefill).forEach(([name, value]) => setField(name, value));', FACT)
         self.assertIn('id="ff-prefill-banner"', FACT)
 
+    def test_repeat_fact_find_does_not_overwrite_existing_crm_client(self):
+        self.assertIn('One-way / first-write CRM sync', FACT)
+        self.assertIn('never overwrite the client', FACT)
+        self.assertIn('email=eq.${encodeURIComponent(email)}&select=id,email', FACT)
+        self.assertNotIn('on_conflict=email', FACT)
+        self.assertNotIn('resolution=merge-duplicates', FACT)
+
 
 if __name__ == '__main__':
     unittest.main()

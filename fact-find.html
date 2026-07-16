@@ -1223,23 +1223,37 @@
     }
 
     async function upsertCrmFromFactFind(data, submissionId) {
-      const clientRows = await supabaseRest('/rest/v1/clients?on_conflict=email', {
-        method: 'POST',
-        headers: { 'Prefer': 'resolution=merge-duplicates,return=representation' },
-        body: JSON.stringify({
-          full_name: data.full_name,
-          email: data.email,
-          phone: normalisePhone(data),
-          business_name: data.business_name || null,
-          business_type: inferBusinessType(data),
-          current_revenue: cleanMoney(data.revenue),
-          goal_revenue: cleanMoney(data.future_value),
-          source: data.source === 'exit_tax_calculator' ? 'exit_tax_calculator' : 'website_form',
-          notes: data.additional_notes || null
-        })
+      // One-way / first-write CRM sync:
+      // - If an email already exists in CRM, never overwrite the client's saved profile fields.
+      // - Link the new fact-find/analysis activity to the existing client only.
+      // - If no matching email exists, create the client once from the first fact-find.
+      const email = String(data.email || '').trim().toLowerCase();
+      if (!email) throw new Error('Email is required for CRM sync');
+
+      const existingClients = await supabaseRest(`/rest/v1/clients?email=eq.${encodeURIComponent(email)}&select=id,email`, {
+        method: 'GET'
       });
-      const client = clientRows?.[0];
-      if (!client?.id) throw new Error('CRM client upsert did not return an id');
+
+      let client = existingClients?.[0] || null;
+      if (!client) {
+        const clientRows = await supabaseRest('/rest/v1/clients', {
+          method: 'POST',
+          headers: { 'Prefer': 'return=representation' },
+          body: JSON.stringify({
+            full_name: data.full_name,
+            email,
+            phone: normalisePhone(data),
+            business_name: data.business_name || null,
+            business_type: inferBusinessType(data),
+            current_revenue: cleanMoney(data.revenue),
+            goal_revenue: cleanMoney(data.future_value),
+            source: data.source === 'exit_tax_calculator' ? 'exit_tax_calculator' : 'website_form',
+            notes: data.additional_notes || null
+          })
+        });
+        client = clientRows?.[0];
+      }
+      if (!client?.id) throw new Error('CRM client sync did not return an id');
 
       if (submissionId) {
         await supabaseRest(`/rest/v1/form_submissions?id=eq.${submissionId}`, {
