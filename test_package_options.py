@@ -15,7 +15,14 @@ class PackageOptionsTest(unittest.TestCase):
         self.assertIn('function buildPackageRecommendation', HTML)
         self.assertIn("packageMode === 'concierge_only'", HTML)
         self.assertIn('We hold your hand through establishing the companies', HTML)
-        self.assertIn('Self-Steer option is intentionally hidden', HTML)
+        concierge_only_block = HTML.split("if (packageMode === 'concierge_only')", 1)[1].split('return `', 2)[1].split('`;', 1)[0]
+        self.assertNotIn('Self-Steer', concierge_only_block)
+        self.assertNotIn('2+ entities', concierge_only_block)
+        self.assertIn('High-touch implementation support', concierge_only_block)
+        self.assertIn('Co-ordinate with your current home accountant', concierge_only_block)
+        self.assertIn('Payment provider set ups', concierge_only_block)
+        self.assertIn('Assist with guiding on intercompany / transfer pricing arrangements', concierge_only_block)
+        self.assertIn('Assist with local services such as insurance, license and visa', concierge_only_block)
 
     def test_custom_prices_drive_fee_and_payload(self):
         self.assertIn('function getPackagePrices', HTML)

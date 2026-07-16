@@ -662,12 +662,18 @@
                 return `
                     <h3>Recommended package: Concierge guided setup</h3>
                     <div class="package-card primary">
-                        <h4>Concierge</h4>
+                        <h4>Concierge guided setup</h4>
                         <div class="package-price">${formatCurrency(prices.concierge, currentCurrency)}</div>
                         <p>We hold your hand through establishing the companies with you: structure confirmation, setup roadmap, provider coordination, document preparation guidance, banking/payment sequencing and implementation check-ins.</p>
-                        <p><strong>Positioning:</strong> this is the guided implementation version of the Self-Steer package — not a heavy done-for-you concierge model.</p>
+                        <ul>
+                            <li>High-touch implementation support</li>
+                            <li>Provider coordination</li>
+                            <li>Co-ordinate with your current home accountant</li>
+                            <li>Payment provider set ups</li>
+                            <li>Assist with guiding on intercompany / transfer pricing arrangements</li>
+                            <li>${document.getElementById('jurisdiction').value === 'indonesia' ? 'Assist with local services such as insurance, license and visa' : 'Banking/payment sequencing and regular setup check-ins'}</li>
+                        </ul>
                     </div>
-                    <div class="internal-note">Self-Steer option is intentionally hidden for this client because you are presenting one clear offer.</div>
                 `;
             }
 
