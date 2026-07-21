@@ -493,6 +493,21 @@ footer {
   font-size: 12px;
 }
 
+.footer-legal {
+  flex: 0 0 100%;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0.15px;
+  color: rgba(255,255,255,0.48);
+}
+
+.footer-legal strong {
+  color: rgba(255,255,255,0.68);
+  font-weight: 600;
+}
+
 /* ---- ABOUT PAGE ---- */
 .about-hero {
   background: var(--charcoal);
