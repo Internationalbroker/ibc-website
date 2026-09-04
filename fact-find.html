@@ -3,12 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fact Find — International Broker Co</title>
+  <title>Confidential Intake, International Broker Co</title>
+  <meta name="description" content="Confidential pre-consultation intake. 15–20 minutes covering your situation, business, assets and goals so your Discovery Call is as useful as possible." />
+  <link rel="canonical" href="https://www.internationalbroker.co/fact-find.html" />
+  <meta name="robots" content="noindex, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.internationalbroker.co/fact-find.html" />
+  <meta property="og:title" content="Confidential Intake, International Broker Co" />
+  <meta property="og:description" content="Complete this before your consultation. The more detail you provide, the more useful your session will be." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Confidential Intake, International Broker Co" />
+  <meta name="twitter:description" content="Complete this before your consultation." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
-  <script src="https://unpkg.com/@supabase/supabase-js@2.39.0"></script>
   <!-- Google Places Autocomplete - disabled until API fully configured -->
   <style>
-    /* ---- FACT FIND SPECIFIC ---- */
+    /* ---- CONFIDENTIAL INTAKE SPECIFIC ---- */
     .ff-hero {
       background: var(--charcoal);
       padding: 120px 40px 60px;
@@ -292,26 +305,30 @@
 </head>
 <body>
 
-  <nav>
+  <nav aria-label="Main navigation">
     <a href="index.html" class="nav-logo">
-      <div class="nav-monogram">IB</div>
+      <div class="nav-monogram" aria-hidden="true">IB</div>
       <div class="nav-brand">
         <span class="nav-brand-name">International Broker Co</span>
         <span class="nav-brand-tagline">For Borderless Founders</span>
       </div>
     </a>
-    <ul class="nav-links">
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
+      <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+      <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+    </button>
+    <ul class="nav-links" id="site-menu">
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
-      <li><a href="workwithme.html">Work With Me</a></li>
+      <li><a href="case-studies.html">Case Studies</a></li>
       <li><a href="borderlessfounders.html">Borderless Founders</a></li>
-      <li><a href="workwithme.html" class="cta-link">Work With Me</a></li>
+      <li><a href="workwithme.html" class="cta-link">Work With Us</a></li>
     </ul>
   </nav>
 
   <!-- HERO -->
   <div class="ff-hero">
-    <h1>Confidential Fact Find</h1>
+    <h1>Confidential Intake</h1>
     <p>Complete this before your consultation. The more detail you provide, the more useful your session will be.</p>
     <span class="ff-time">⏱ Takes approximately 15–20 minutes</span>
   </div>
@@ -325,7 +342,7 @@
     <form id="ff-form">
 
       <!-- ============================================================
-           SECTION 1 — PERSONAL
+           SECTION 1, PERSONAL
       ============================================================ -->
       <div class="ff-section">
         <div class="ff-section-header">
@@ -493,7 +510,7 @@
           </div>
           <div class="ff-field">
             <label>Passport(s) Held</label>
-            <span class="ff-hint">List all passports — separate from citizenship, matters for banking & travel</span>
+            <span class="ff-hint">List all passports, separate from citizenship, matters for banking & travel</span>
             <select name="passports">
               <option value="">Select primary passport</option>
               <option value="Australian">Australian</option>
@@ -580,7 +597,7 @@
       </div>
 
       <!-- ============================================================
-           SECTION 2 — BUSINESS
+           SECTION 2, BUSINESS
       ============================================================ -->
       <div class="ff-section">
         <div class="ff-section-header">
@@ -658,7 +675,7 @@
           </div>
           <div class="ff-field">
             <label>Anticipated Business Value in 3–5 Years <span class="ff-currency-tag" id="future-val-currency">AUD</span></label>
-            <span class="ff-hint">Your estimate — used for exit tax and restructure timing calculations</span>
+            <span class="ff-hint">Your estimate, used for exit tax and restructure timing calculations</span>
             <input type="text" name="future_value" placeholder="e.g. 3,000,000" />
           </div>
           <div class="ff-field">
@@ -677,7 +694,7 @@
           </div>
           <div class="ff-field">
             <label>Original Cost Base of Business <span class="ff-currency-tag" id="costbase-currency">AUD</span></label>
-            <span class="ff-hint">What did you originally invest to set it up? Generally zero — enter 0 if unsure</span>
+            <span class="ff-hint">What did you originally invest to set it up? Generally zero, enter 0 if unsure</span>
             <input type="text" name="cost_base" placeholder="0" />
           </div>
           <div class="ff-field">
@@ -729,7 +746,7 @@
       </div>
 
       <!-- ============================================================
-           SECTION 3 — ASSETS
+           SECTION 3, ASSETS
       ============================================================ -->
       <div class="ff-section">
         <div class="ff-section-header">
@@ -810,7 +827,7 @@
       </div>
 
       <!-- ============================================================
-           SECTION 4 — PROPERTIES
+           SECTION 4, PROPERTIES
       ============================================================ -->
       <div class="ff-section">
         <div class="ff-section-header">
@@ -834,7 +851,7 @@
       </div>
 
       <!-- ============================================================
-           SECTION 5 — EXIT TAX & GOALS
+           SECTION 5, EXIT TAX & GOALS
       ============================================================ -->
       <div class="ff-section">
         <div class="ff-section-header">
@@ -872,7 +889,7 @@
       </div>
 
       <!-- ============================================================
-           SECTION 6 — GOALS
+           SECTION 6, GOALS
       ============================================================ -->
       <div class="ff-section">
         <div class="ff-section-header">
@@ -882,7 +899,7 @@
 
         <div class="ff-grid">
           <div class="ff-field ff-full">
-            <label>Primary Goal — Select All That Apply</label>
+            <label>Primary Goal, Select All That Apply</label>
             <div class="ff-radio-group">
               <label><input type="checkbox" name="goals" value="reduce_ongoing_tax"> Reduce ongoing tax</label>
               <label><input type="checkbox" name="goals" value="exit_planning"> Plan for business exit</label>
@@ -945,15 +962,21 @@
            SUBMIT
       ============================================================ -->
       <div class="ff-submit-section">
-        <p>Your information is kept strictly confidential and used only to prepare for your consultation.<br>You'll receive a confirmation email once submitted.</p>
-        <button type="submit" class="ff-submit">Submit Fact Find →</button>
+        <label style="display:flex;align-items:flex-start;justify-content:center;gap:10px;max-width:640px;margin:0 auto 18px;text-align:left;font-size:13px;line-height:1.5;color:var(--text-muted)">
+          <input type="checkbox" id="ff-privacy-consent" required style="margin-top:3px" />
+          <span>I consent to International Broker Co securely storing this confidential information in its CRM and GoHighLevel account to prepare for and follow up on my consultation.</span>
+        </label>
+        <p>Your information is kept strictly confidential and used only to prepare for and follow up on your consultation.</p>
+        <button type="button" id="ff-save-draft" style="display:none;margin:0 auto 12px;background:white;color:var(--olive);border:1px solid var(--olive);padding:12px 28px;border-radius:8px;font-weight:600;cursor:pointer">Save draft and continue later</button>
+        <p id="ff-draft-status" role="status" style="display:none;margin:0 0 12px;color:var(--olive)"></p>
+        <button type="submit" class="ff-submit">Submit Confidential Intake →</button>
       </div>
 
     </form>
 
     <div class="ff-success" id="ff-success">
       <h2>✓ Received</h2>
-      <p>Thanks — we'll review your fact find before the call.<br>You'll hear from us shortly to confirm your consultation time.</p>
+      <p>Thanks, we'll review your confidential intake before the call.<br>You'll hear from us shortly to confirm your consultation time.</p>
     </div>
 
   </div>
@@ -962,10 +985,19 @@
     <div class="footer-inner">
       <span class="footer-brand">International Broker Co</span>
       <span class="footer-tagline">For Borderless Founders</span>
-      <span class="footer-copy">© 2026 International Broker Co. All rights reserved.</span>
-      <div class="footer-legal">International Broker Co is operated by <strong>COSTANZA AND SON LIMITED</strong>. Registered office: UNIT 1603, 16/F THE L. PLAZA, 367–375 QUEEN'S RD CENTRAL, SHEUNG WAN, HONG KONG.</div>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/calluminternationalbroker/" target="_blank" rel="me noopener noreferrer" aria-label="Instagram, @calluminternationalbroker">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.9" fill="currentColor" stroke="none"/></svg>
+          <span>@calluminternationalbroker</span>
+        </a>
+        <!-- Additional social profiles: add verified URLs only. See index.html footer for template. -->
+      </div>
+      <span class="footer-copy">© 2026 International Broker Co. All rights reserved. · <a href="https://api.leadconnectorhq.com/widget/booking/luxhuhhTHzXwvUyxVUw0" style="color: inherit;">Book a 30-minute Discovery Call</a></span>
+      <div class="footer-legal">International Broker Co is operated by COSTANZA AND SON LIMITED. Registered office: UNIT 1603, 16/F THE L. PLAZA, 367–375 QUEEN'S RD CENTRAL, SHEUNG WAN, HONG KONG.</div>
     </div>
   </footer>
+
+  <script src="js/site.js" defer></script>
 
   <script>
     // ---- Google Places Autocomplete ----
@@ -1058,25 +1090,27 @@
 
     // ---- Property blocks ----
     function setProperties(n) {
+      propCount = 0;
       const container = document.getElementById('properties-container');
       container.innerHTML = '';
       for (let i = 1; i <= n; i++) {
         container.innerHTML += propertyBlock(i);
       }
       if (n === 5) {
-        container.innerHTML += propertyBlock(5);
         container.innerHTML += `<button type="button" id="add-property" onclick="addProperty()">+ Add Another Property</button>`;
       }
     }
 
     let propCount = 0;
     function addProperty() {
+      if (propCount >= 5) return;
       propCount++;
       const container = document.getElementById('properties-container');
       const btn = document.getElementById('add-property');
       const div = document.createElement('div');
       div.innerHTML = propertyBlock(5 + propCount);
       container.insertBefore(div.firstElementChild, btn);
+      if (propCount === 5) btn.remove();
     }
 
     function propertyBlock(n) {
@@ -1166,9 +1200,8 @@
       return Object.keys(fallback).length ? fallback : null;
     }
 
-    function applyCalculatorPrefill() {
-      const prefill = getCalculatorPrefill();
-      if (!prefill) return;
+    function applyPrefillValues(prefill, source = 'calculator') {
+      if (!prefill || typeof prefill !== 'object' || Array.isArray(prefill)) return;
       Object.entries(prefill).forEach(([name, value]) => setField(name, value));
       updateCurrency();
       if (prefill.cgt_aware) {
@@ -1180,197 +1213,129 @@
         if (radio) toggle('valuation-detail', 'yes', radio);
       }
       const banner = document.getElementById('ff-prefill-banner');
-      if (banner) banner.style.display = 'block';
+      if (banner) {
+        banner.innerHTML = source === 'crm'
+          ? '<strong>Call details imported.</strong> We have pre-filled only the information reviewed and accepted after your call. Please check it, correct anything that has changed, and complete the remaining fields.'
+          : '<strong>Calculator details imported.</strong> We have pre-filled the business, valuation and exit-tax fields from the calculator. Please review and correct anything that is not quite right before submitting.';
+        banner.style.display = 'block';
+      }
+    }
+
+    async function applyCalculatorPrefill() {
+      const params = new URLSearchParams(window.location.search);
+      const sessionToken = params.get('crm_session');
+      if (sessionToken) {
+        try {
+          const response = await fetch(`https://ibc-crm-sigma.vercel.app/api/public/fact-find-session?token=${encodeURIComponent(sessionToken)}`, { method: 'GET', credentials: 'omit', headers: { 'Accept': 'application/json' } });
+          const body = await response.json();
+          if (!response.ok || !body?.profile) throw new Error(body?.error || 'Session could not be loaded');
+          applyPrefillValues(body.profile, 'crm');
+          const saveButton = document.getElementById('ff-save-draft');
+          if (saveButton) saveButton.style.display = 'block';
+        } catch (error) {
+          console.warn('CRM session could not be loaded', error);
+          alert('This fact-find link is invalid, expired or revoked. Ask Callum to send a fresh link.');
+        } finally { window.history.replaceState({}, document.title, window.location.pathname); }
+        return;
+      }
+      const crmToken = params.get('crm_prefill');
+      if (crmToken) {
+        try {
+          const response = await fetch(`https://ibc-crm-sigma.vercel.app/api/public/fact-find-prefill?token=${encodeURIComponent(crmToken)}`, {
+            method: 'GET',
+            credentials: 'omit',
+            headers: { 'Accept': 'application/json' }
+          });
+          const body = await response.json();
+          if (!response.ok || !body?.profile) throw new Error(body?.error || 'Prefill link could not be loaded');
+          applyPrefillValues(body.profile, 'crm');
+        } catch (error) {
+          console.warn('CRM prefill could not be loaded', error);
+          alert('This prefilled fact-find link is invalid or has expired. Ask Callum to send a fresh link.');
+        } finally {
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+        return;
+      }
+      const prefill = getCalculatorPrefill();
+      if (!prefill) return;
+      applyPrefillValues(prefill);
       window.history.replaceState({}, document.title, window.location.pathname);
     }
 
-    document.addEventListener('DOMContentLoaded', applyCalculatorPrefill);
+    document.addEventListener('DOMContentLoaded', () => { void applyCalculatorPrefill(); });
 
-    // ---- Form submit to Formspree + Supabase + CRM ----
+    // ---- First-party fact-find submission ----
+    // One-way / first-write CRM sync is enforced by the first-party server endpoint.
+    // Repeat submissions never overwrite the client; conflicts are preserved for review.
     const form = document.getElementById('ff-form');
+    const crmSessionToken = new URLSearchParams(window.location.search).get('crm_session');
+    const requestId = crypto.randomUUID();
+    const honeypot = document.createElement('input');
+    honeypot.id = 'company-website';
+    honeypot.type = 'text';
+    honeypot.tabIndex = -1;
+    honeypot.autocomplete = 'off';
+    honeypot.setAttribute('aria-hidden', 'true');
+    honeypot.style.position = 'absolute';
+    honeypot.style.left = '-10000px';
+    form.appendChild(honeypot);
 
-    function cleanMoney(value) {
-      const n = Number(String(value || '').replace(/[^0-9.-]/g, ''));
-      return Number.isFinite(n) ? n : null;
-    }
-
-    function normalisePhone(data) {
-      const raw = String(data.phone || '').trim();
-      if (!raw) return '';
-      const cc = String(data.phone_country || '').trim();
-      return raw.startsWith('+') ? raw : `${cc}${raw.replace(/^0+/, '')}`;
-    }
-
-    function inferBusinessType(data) {
-      return data.business_valued === 'yes' || cleanMoney(data.business_value) || cleanMoney(data.future_value)
-        ? 'sellable_business'
-        : 'consultant_freelancer';
-    }
-
-    async function supabaseRest(path, options = {}) {
-      const supabaseUrl = 'https://krslbjduynxtdajiqlvz.supabase.co';
-      const supabaseKey = 'sb_publishable_xtAlm6TLISW8HtcbMyaO7A_4vufjcjG';
-      const headers = {
-        'apikey': supabaseKey,
-        'Authorization': 'Bearer ' + supabaseKey,
-        'Content-Type': 'application/json',
-        ...(options.headers || {})
-      };
-      const res = await fetch(supabaseUrl + path, { ...options, headers });
-      const text = await res.text();
-      const body = text ? JSON.parse(text) : null;
-      if (!res.ok) throw new Error(body?.message || body?.error || `Supabase HTTP ${res.status}`);
-      return body;
-    }
-
-    async function upsertCrmFromFactFind(data, submissionId) {
-      // One-way / first-write CRM sync:
-      // - If an email already exists in CRM, never overwrite the client's saved profile fields.
-      // - Link the new fact-find/analysis activity to the existing client only.
-      // - If no matching email exists, create the client once from the first fact-find.
-      const email = String(data.email || '').trim().toLowerCase();
-      if (!email) throw new Error('Email is required for CRM sync');
-
-      const existingClients = await supabaseRest(`/rest/v1/clients?email=eq.${encodeURIComponent(email)}&select=id,email`, {
-        method: 'GET'
-      });
-
-      let client = existingClients?.[0] || null;
-      if (!client) {
-        const clientRows = await supabaseRest('/rest/v1/clients', {
-          method: 'POST',
-          headers: { 'Prefer': 'return=representation' },
-          body: JSON.stringify({
-            full_name: data.full_name,
-            email,
-            phone: normalisePhone(data),
-            business_name: data.business_name || null,
-            business_type: inferBusinessType(data),
-            current_revenue: cleanMoney(data.revenue),
-            goal_revenue: cleanMoney(data.future_value),
-            source: data.source === 'exit_tax_calculator' ? 'exit_tax_calculator' : 'website_form',
-            notes: data.additional_notes || null
-          })
-        });
-        client = clientRows?.[0];
+    function serializeFactFind(formData) {
+      const payload = {};
+      for (const [name, value] of formData.entries()) {
+        if (payload[name] === undefined) payload[name] = value;
+        else if (Array.isArray(payload[name])) payload[name].push(value);
+        else payload[name] = [payload[name], value];
       }
-      if (!client?.id) throw new Error('CRM client sync did not return an id');
-
-      if (submissionId) {
-        await supabaseRest(`/rest/v1/form_submissions?id=eq.${submissionId}`, {
-          method: 'PATCH',
-          headers: { 'Prefer': 'return=minimal' },
-          body: JSON.stringify({
-            processed: true,
-            processed_at: new Date().toISOString(),
-            client_created: true,
-            client_id: client.id
-          })
-        });
-      }
-
-      const engagementRows = await supabaseRest('/rest/v1/engagements', {
-        method: 'POST',
-        headers: { 'Prefer': 'return=representation' },
-        body: JSON.stringify({
-          client_id: client.id,
-          engagement_stage: 'discovery',
-          notes: 'Created/updated from website fact-find submission.'
-        })
-      });
-      const engagement = engagementRows?.[0];
-
-      const exitTax = cleanMoney(data.cgt_exposure);
-      if (engagement?.id && exitTax != null) {
-        await supabaseRest('/rest/v1/analysis_results', {
-          method: 'POST',
-          headers: { 'Prefer': 'return=minimal' },
-          body: JSON.stringify({
-            engagement_id: engagement.id,
-            analysis_data: {
-              source: 'website_fact_find',
-              calculator_source: data.source || null,
-              tax_residency: data.tax_residency || null,
-              business_location: data.business_location || null,
-              business_structure: data.business_structure || null,
-              current_revenue: cleanMoney(data.revenue),
-              current_profit: cleanMoney(data.profit),
-              business_value: cleanMoney(data.business_value),
-              future_value: cleanMoney(data.future_value),
-              cost_base: cleanMoney(data.cost_base),
-              cgt_exposure: exitTax,
-              notes: data.additional_notes || null
-            },
-            exit_tax_exposure: exitTax
-          })
-        });
-      }
-
-      return client.id;
+      payload.request_id = requestId;
+      payload.company_website = honeypot.value;
+      payload.privacy_consent = document.getElementById('ff-privacy-consent').checked;
+      payload.source = 'website_fact_find';
+      return payload;
     }
+
+    document.getElementById('ff-save-draft').addEventListener('click', async function() {
+      if (!crmSessionToken) return;
+      const status = document.getElementById('ff-draft-status');
+      this.disabled = true; status.style.display = 'block'; status.textContent = 'Saving draft…';
+      try {
+        const draft = serializeFactFind(new FormData(form));
+        delete draft.request_id; delete draft.company_website; delete draft.privacy_consent; delete draft.source;
+        const response = await fetch(`https://ibc-crm-sigma.vercel.app/api/public/fact-find-session?token=${encodeURIComponent(crmSessionToken)}`, { method: 'PATCH', credentials: 'omit', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify({ draft }) });
+        const body = await response.json(); if (!response.ok) throw new Error(body?.error || 'Draft could not be saved');
+        status.textContent = 'Draft saved. You can close this page and use the same link to continue.';
+      } catch (error) { status.textContent = error.message || 'Draft could not be saved.'; }
+      finally { this.disabled = false; }
+    });
 
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
       const btn = form.querySelector('.ff-submit');
       btn.textContent = 'Submitting...';
       btn.disabled = true;
-
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData);
-      
       try {
-        // 1. Submit to Formspree (existing email backup)
-        const formspreeRes = await fetch('https://formspree.io/f/xlgyedby', {
+        const endpoint = crmSessionToken
+          ? `https://ibc-crm-sigma.vercel.app/api/public/fact-find-session?token=${encodeURIComponent(crmSessionToken)}`
+          : 'https://ibc-crm-sigma.vercel.app/api/public/fact-find';
+        const payload = serializeFactFind(new FormData(form));
+        if (crmSessionToken) { delete payload.request_id; delete payload.company_website; delete payload.privacy_consent; delete payload.source; }
+        const response = await fetch(endpoint, {
           method: 'POST',
-          body: formData,
-          headers: { 'Accept': 'application/json' }
+          credentials: 'omit',
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
         });
-        
-        // 2. Update CRM client/analysis records, with raw form_submissions as a best-effort log.
-        let submissionId = null;
-        try {
-          try {
-            const rows = await supabaseRest('/rest/v1/form_submissions', {
-              method: 'POST',
-              headers: { 'Prefer': 'return=representation' },
-              body: JSON.stringify({
-                submission_data: data,
-                source: data.source || 'website_form',
-                processed: false
-              })
-            });
-            submissionId = rows?.[0]?.id || null;
-            console.log('✅ Supabase submission successful', submissionId);
-          } catch (submissionErr) {
-            console.warn('⚠️ Raw form_submissions insert failed; continuing CRM sync:', submissionErr);
-          }
-
-          const clientId = await upsertCrmFromFactFind(data, submissionId);
-          console.log('✅ CRM client/fact-find updated', clientId);
-        } catch (err) {
-          // Do not block the client-facing submission if CRM sync fails; keep Formspree as backup.
-          console.error('❌ Supabase/CRM sync error:', err);
-        }
-        
-        // Wait for Supabase/CRM sync to complete before redirecting
-        if (formspreeRes.ok) {
-          // Give Supabase a moment to complete
-          setTimeout(() => {
-            window.location.href = 'thanks.html';
-          }, 1000);
-        } else {
-          btn.textContent = 'Submit Fact Find →';
-          btn.disabled = false;
-          alert('Something went wrong. Please try again.');
-        }
-      } catch(err) {
-        console.error('Submit error:', err);
-        btn.textContent = 'Submit Fact Find →';
+        if (!response.ok) throw new Error('Fact find could not be saved');
+        window.location.href = 'thanks.html';
+      } catch (err) {
+        btn.textContent = 'Submit Confidential Intake →';
         btn.disabled = false;
-        alert('Connection error. Please try again.');
+        alert('We could not save your fact find. Please try again.');
       }
     });
   </script>
 
 </body>
 </html>
+
