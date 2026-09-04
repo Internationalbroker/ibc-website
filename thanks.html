@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Thanks — International Broker Co</title>
   <link rel="stylesheet" href="css/style.css" />
-  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
   <style>
     .thanks-hero {
       background: var(--charcoal);
@@ -66,22 +65,22 @@
       white-space: nowrap;
     }
 
-    .thanks-calendly-heading {
+    .thanks-ghl-heading {
       text-align: center;
       margin-bottom: 32px;
     }
-    .thanks-calendly-heading h2 {
+    .thanks-ghl-heading h2 {
       font-size: 24px;
       font-weight: 800;
       color: var(--charcoal);
       margin-bottom: 8px;
     }
-    .thanks-calendly-heading p {
+    .thanks-ghl-heading p {
       font-size: 15px;
       color: var(--text-muted);
     }
 
-    .calendly-inline-widget {
+    .ghl-inline-widget {
       min-width: 320px;
       height: 700px;
       border-radius: 10px;
@@ -91,7 +90,7 @@
     @media (max-width: 768px) {
       .thanks-hero { padding: 100px 24px 60px; }
       .thanks-body { padding: 40px 20px 80px; }
-      .calendly-inline-widget { height: 800px; }
+      .ghl-inline-widget { height: 800px; }
     }
   </style>
 </head>
@@ -127,15 +126,18 @@
       <span>Or book a time now</span>
     </div>
 
-    <div class="thanks-calendly-heading">
+    <div class="thanks-ghl-heading">
       <h2>Book a Discovery Call</h2>
       <p>30 minutes. No obligation. We'll map out your situation and what the path forward looks like.</p>
     </div>
 
-    <!-- Calendly inline widget -->
-    <div class="calendly-inline-widget"
-         data-url="https://calendly.com/callum-internationalbroker/30min?hide_gdpr_banner=1&primary_color=6B7C4A">
-    </div>
+    <!-- GoHighLevel Discovery Call calendar -->
+    <iframe class="ghl-inline-widget"
+            src="https://api.leadconnectorhq.com/widget/booking/luxhuhhTHzXwvUyxVUw0"
+            title="Book a 30-minute Discovery Call"
+            loading="lazy"
+            style="width:100%;border:0;">
+    </iframe>
 
   </div>
 
@@ -148,7 +150,6 @@
     </div>
   </footer>
 
-  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 
 </body>
 </html>

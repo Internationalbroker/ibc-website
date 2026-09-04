@@ -33,8 +33,9 @@ class CalculatorFactFindHandoffTests(unittest.TestCase):
     def test_repeat_fact_find_does_not_overwrite_existing_crm_client(self):
         self.assertIn('One-way / first-write CRM sync', FACT)
         self.assertIn('never overwrite the client', FACT)
-        self.assertIn('email=eq.${encodeURIComponent(email)}&select=id,email', FACT)
-        self.assertNotIn('on_conflict=email', FACT)
+        self.assertIn("'https://ibc-crm-sigma.vercel.app/api/public/fact-find'", FACT)
+        self.assertNotIn('/rest/v1/clients', FACT)
+        self.assertNotIn('NEXT_PUBLIC_SUPABASE_ANON_KEY', FACT)
         self.assertNotIn('resolution=merge-duplicates', FACT)
 
 
